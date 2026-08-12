@@ -1,6 +1,5 @@
 import numpy as np
 import random
-import mnist_loader
 
 # NN recognizing digits
 
@@ -237,10 +236,19 @@ class Network(object):
                 self.update_mini_batch(mini_batch, eta)
 
             # Logging progress
+            # essentialy, each epoch, we first train the net (above code) and then try to feed a sample data (without computing
+            # backpropagation after, just evaluation) and check how the net progressed
+            # accuracy array
+            accuracy_array = []
             if test_data:
                 # Syntax for string nesting
+                evaluation = self.evaluate(test_data)
+                accuracy_array.append(evaluation)
                 print("Epoch {0} : {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test
+                    j, evaluation, n_test
                 ))
             else:
                 print("Epoch {0} complete".format(j))
+
+        print("----- Net 1 Finished -----")    
+        return accuracy_array
